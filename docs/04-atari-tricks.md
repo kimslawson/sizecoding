@@ -53,13 +53,23 @@ POKE 54277, PEEK(&F + 1)      ' VSCROL = high byte, 0..7, without a /256
 `F & -2048` is nonzero exactly when F is negative or above 2047, so one test covers both
 directions. `PEEK(&F+1)` reads the high byte in 2.2 units where `F/256` takes 6.9.
 
-### ANTIC's 4K wall
+### ANTIC's 4K boundary
 
-ANTIC's address counter only carries within the low 12 bits. A display that runs past an
-address ending in $FFF continues at the start of the *same* 4K block, not the next one. Normal
-screens never cross a 4K boundary, but a scrolling window onto arbitrary memory does, and then
-the screen shows `$1000` where you'd expect `$2000`. If your game hit-tests against what's on
-screen, compute addresses the same way: `A & -4096 ! ((A + offset) & 4095)`.
+ANTIC's display address counter only carries within its low 12 bits. When screen data runs
+past an address ending in $FFF, ANTIC continues at the start of the *same* 4K block, not the
+next one. The OS deals with this for its own screens: a GRAPHICS 8 screen (7,680 bytes) can't
+fit in one 4K block, so the OS gives its display list a second LMS where the screen crosses the
+boundary. Your own code has to deal with it whenever the memory it displays crosses a $x000
+address:
+
+- a custom display list needs an LMS on the first line past the boundary;
+- coarse scrolling (moving an LMS address) can carry the displayed area across one;
+- code that turns a screen position into a memory address (plotting, collision tests, reading
+  what's under a player) must agree with what ANTIC actually shows.
+
+Either keep screen data inside one 4K block, or, where it's allowed to cross, compute
+addresses the way ANTIC fetches them: `A & -4096 ! ((A + offset) & 4095)` keeps A's 4K block
+and wraps the offset inside it.
 
 ### Text on screen without PRINT
 

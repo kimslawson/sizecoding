@@ -88,6 +88,11 @@ and the NOMAM crew for running the BASIC 10Liner contest year after year. Timing
 in [atari800](https://atari800.github.io/) with its built-in AltirraOS, thanks to Avery Lee's
 [Altirra](https://www.virtualdub.org/altirra.html).
 
+## License&nbsp;&nbsp;📜
+
+The tools, tests and example programs are [MIT](LICENSE). The writing (this README, `docs/`
+and the benchmark results) is [CC BY 4.0](LICENSE-docs): share it, adapt it, just give credit.
+
 ## Get in touch&nbsp;&nbsp;📩
 
   * [OxC0FFEE on AtariAge](https://atariage.com/forums/profile/50996-oxc0ffee/)

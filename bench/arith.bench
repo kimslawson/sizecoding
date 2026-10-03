@@ -1,0 +1,44 @@
+# Arithmetic and reads. GRAPHICS 0 (text mode DMA), NTSC.
+[setup]
+GRAPHICS 0
+R = 100 : B = 7 : T = 1234 : K = 0
+[block K = 3]
+K = 3
+[block K = R]
+K = R
+[block K = R + B]
+K = R + B
+[block K = R * 2]
+K = R * 2
+[block K = R * 4]
+K = R * 4
+[block K = R * 8]
+K = R * 8
+[block K = R * 40]
+K = R * 40
+[block K = R * 256]
+K = R * 256
+[block K = R / 2]
+K = R / 2
+[block K = R / 8]
+K = R / 8
+[block K = R MOD 8]
+K = R MOD 8
+[block K = R & 7]
+K = R & 7
+[block K = T / 256]
+K = T / 256
+[block K = PEEK(&T + 1)]
+K = PEEK(&T + 1)
+[block INC K]
+INC K
+[block K = K + 1]
+K = K + 1
+[block K = (R > 9) * 7]
+K = (R > 9) * 7
+[block K = -(R > 9) & 7]
+K = -(R > 9) & 7
+[block K = PEEK(1536)]
+K = PEEK(1536)
+[block K = DPEEK(1536)]
+K = DPEEK(1536)

@@ -1,0 +1,10 @@
+empty loop: 10 jiffies for 1000 passes; resolution 0.13 units
+  POSITION 2, 2                       1.18 units  ( 0.90% of a frame)
+  POSITION 2, 2 : PRINT "A";          5.89 units  ( 4.50% of a frame)
+  POKE 48082, 33 (one screen byte)    0.92 units  ( 0.70% of a frame)
+  FOR J = 1 TO 10 : NEXT J           17.03 units  (13.00% of a frame)
+  EXEC Q R (one parameter)            2.75 units  ( 2.10% of a frame)
+  K = LEN(A$)                         1.44 units  ( 1.10% of a frame)
+  IF A$ = "HELLO" THEN K = 1          4.45 units  ( 3.40% of a frame)
+  K = ABS(R)                          1.44 units  ( 1.10% of a frame)
+  K = SGN(R)                          1.57 units  ( 1.20% of a frame)

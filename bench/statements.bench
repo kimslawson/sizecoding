@@ -1,0 +1,49 @@
+# Statements, tests and calls. GRAPHICS 0 (text mode DMA), NTSC.
+[setup]
+GRAPHICS 0
+R = 100 : B = 7 : K = 0
+DIM X(10), Y(10) BYTE
+PROC P
+ENDPROC
+[block POKE 1536, R]
+POKE 1536, R
+[block two POKEs]
+POKE 1536, R : POKE 1537, B
+[block DPOKE 1536, B * 256 + R]
+DPOKE 1536, B * 256 + R
+[block K = X(3) (word array)]
+K = X(3)
+[block K = Y(3) (byte array)]
+K = Y(3)
+[block IF R = 5 THEN K = 3 (false)]
+IF R = 5 THEN K = 3
+[block IF R = 100 THEN K = 3 (true)]
+IF R = 100 THEN K = 3
+[block IF R = 5 AND B = 7 THEN ...]
+IF R = 5 AND B = 7 THEN K = 3
+[block IF R = 5 / IF B = 7 nested]
+IF R = 5
+  IF B = 7 THEN K = 3
+ENDIF
+[block IF R THEN ... (true)]
+IF R THEN K = 3
+[block K = STICK(0)]
+K = STICK(0)
+[block K = STRIG(0)]
+K = STRIG(0)
+[block K = TIME]
+K = TIME
+[block K = RAND(10)]
+K = RAND(10)
+[block MOVE 1536, 1600, 9]
+MOVE 1536, 1600, 9
+[block MSET 1536, 12, 0]
+MSET 1536, 12, 0
+[block EXEC P (empty PROC)]
+EXEC P
+[block SOUND 0, R, 10, 8]
+SOUND 0, R, 10, 8
+[block DPOKE 53760, 168 * 256 + R]
+DPOKE 53760, 168 * 256 + R
+[block PMHPOS 0, R]
+PMHPOS 0, R

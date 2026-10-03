@@ -1,0 +1,24 @@
+# Slow things: the OS, loops, calls. GRAPHICS 0, NTSC.
+[setup]
+GRAPHICS 0
+R = 100 : K = 0 : A$ = "HELLO"
+PROC Q X
+ENDPROC
+[block POSITION 2, 2]
+POSITION 2, 2
+[block POSITION 2, 2 : PRINT "A";]
+POSITION 2, 2 : PRINT "A";
+[block POKE 48082, 33 (one screen byte)]
+POKE 48082, 33
+[block FOR J = 1 TO 10 : NEXT J]
+FOR J = 1 TO 10 : NEXT J
+[block EXEC Q R (one parameter)]
+EXEC Q R
+[block K = LEN(A$)]
+K = LEN(A$)
+[block IF A$ = "HELLO" THEN K = 1]
+IF A$ = "HELLO" THEN K = 1
+[block K = ABS(R)]
+K = ABS(R)
+[block K = SGN(R)]
+K = SGN(R)

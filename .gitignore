@@ -1,0 +1,8 @@
+__pycache__/
+tools/.cache/
+examples/*/build/
+*.xex
+*.o
+*.asm
+*.lbl
+*.lst

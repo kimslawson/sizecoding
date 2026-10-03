@@ -37,7 +37,7 @@ There are two minimizers, and they are not equal:
 | Variable names | kept | one letter for the most used ones (`-f` keeps them) |
 | Checks the result | no | compiles it and compares the code |
 
-On two complete PUR-120 games, fbp `-O` came out 36 and 21 characters shorter than `-l:min`,
+On two complete PUR-120 games, fbp `-O` came out 31 and 21 characters shorter than `-l:min`,
 both with a byte-identical XEX. If you use `-l:min`, write the forms in the right column by
 hand; [Size tricks](03-size-tricks.md) gives each one's saving under both tools.
 
@@ -108,8 +108,12 @@ jiffy counter and wraps from 32767 to -32768 after about 9 minutes.
 
 - **There is one name space for variables of every type.** `A`, `A$` and `A()` are the same
   name, so a program can't have a numeric `G` and a string `G$`. There are 27 one-letter names:
-  `A` to `Z` and `_`. PROC and DLI names live in their own name space, so `PROC N` and a
-  variable `N` can coexist.
+  `A` to `Z` and `_`. PROC, DATA and DLI names are labels, in a name space of their own, so
+  `DLI SET N = ...` and a variable `N` can coexist (labels can't repeat each other, though).
+  Three catches when a DATA label shares a variable's name: `&X` and `ADR(X)` give the DATA
+  address, not the variable's; `X(n)` reads an array *variable* X first; and assigning to a
+  DATA element (`X(0) = 1`) normally makes the parser create a stray variable named X, which
+  doesn't happen if X already exists, so the compiled code changes.
 - **A variable exists from its first appearance in the source**, reading top to bottom (not in
   execution order). Assignment, `FOR`, `INC`, `DEC`, `INPUT`, `GET` and `DIM` all create it.
   Reading it before any of those is a compile error ("expected: variable name"), and the fix is

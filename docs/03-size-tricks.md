@@ -123,6 +123,10 @@ handles the rest. If your pipeline is `-l:min`, adopt them as habits.
   not one that appears ten times. fbp `-O` renames by frequency for you; with `-l:min`, do it by
   hand.
 - **`_` is the 27th one-letter name.** Easy to forget, free to use.
+- **Labels don't use up letters.** PROC, DATA and DLI names are a separate name space, so when
+  all 27 letters are taken by variables, a DLI or a DATA table can still have a one-letter name
+  that a variable also uses (`DLI SET N` next to a variable `N`). Mind the catches in
+  [FastBasic for sizecoders](02-fastbasic-for-sizecoders.md#names).
 - **Reuse variables across phases of a frame.** A temporary that is dead by the time another job
   runs can be that job's temporary too: the stick reading, the missile target and the status
   digit can all be J. Write down which variable holds what, when, at the top of the readable

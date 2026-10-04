@@ -99,7 +99,7 @@ def compile_xex(src_bytes, target=None, name='p', extra=()):
 
 
 def fb_minimize(src_path, width=120, target=None):
-    """FastBasic's own minimizer (-l:min). Returns the listing bytes."""
+    """FastBasic's own minimizer (-ls). Returns the listing bytes."""
     target = target or TARGET
     with tempfile.TemporaryDirectory() as d:
         shutil.copy(src_path, os.path.join(d, 'p.bas'))
@@ -107,7 +107,7 @@ def fb_minimize(src_path, width=120, target=None):
                            cwd=d, capture_output=True, text=True, errors='replace')
         m = os.path.join(d, 'p.min')
         if not os.path.exists(m):
-            raise SystemExit('fastbasic -l:min failed:\n' + r.stdout + r.stderr)
+            raise SystemExit('fastbasic -ls failed:\n' + r.stdout + r.stderr)
         return open(m, 'rb').read()
 
 
@@ -124,10 +124,10 @@ def fbp_minimize(src_path, width=120, target=None, opts=('-O',), keep_names=Fals
 
 
 def minimize(src_path, width=120, target=None, tool='auto', keep_names=False):
-    """Minimize with fbp if available (or asked for), else FastBasic's -l:min."""
+    """Minimize with fbp if available (or asked for), else FastBasic's -ls."""
     if tool == 'fbp' or (tool == 'auto' and have(FBP)):
         return fbp_minimize(src_path, width, target, keep_names=keep_names), 'fbp -O'
-    return fb_minimize(src_path, width, target), 'fastbasic -l:min'
+    return fb_minimize(src_path, width, target), 'fastbasic -ls'
 
 
 def show(b):

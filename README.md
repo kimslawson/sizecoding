@@ -21,7 +21,7 @@ If you read nothing else:
 
 1. **Never abbreviate by hand.** Write a readable, commented source and let a minimizer do the
    spelling. Use [fbp](https://github.com/kimslawson/fastbasic-parser) with `-O`: on two full
-   PUR-120 listings it beat FastBasic's own `-l:min` by 31 and 21 characters, with a
+   PUR-120 listings it beat FastBasic's own `-ls` by 31 and 21 characters, with a
    byte-identical XEX.
 2. **Learn the precedence.** `&`, `!` and `EXOR` bind *tighter* than `*` and `/`, which bind
    tighter than `+` and `-`. `I+U&B` is `I+(U&B)`. Most parentheses you'd type in another

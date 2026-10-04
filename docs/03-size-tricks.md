@@ -3,8 +3,8 @@
 Each trick below is a `trick(...)` entry in [`tests/tricks.py`](../tests/tricks.py), which
 compiles the before and after versions, minimizes both, and (with `--run`) runs both in the
 emulator to check they leave the same values behind. The **saves** column is the difference in
-minimized characters: first with fbp `-O`, then with FastBasic's `-l:min`. A 0 under fbp means
-fbp already does it for you; under `-l:min` you have to write it that way yourself.
+minimized characters: first with fbp `-O`, then with FastBasic's `-ls`. A 0 under fbp means
+fbp already does it for you; under `-ls` you have to write it that way yourself.
 
 One trick failed its behavior check while this page was being written: `X=X+1&7` looks like a
 wrap to 0..7 and is actually `X+1`, because `&` binds tighter than `+`. The test caught it; the
@@ -17,7 +17,7 @@ python3 tests/tricks.py --run    # sizes and behavior (Linux + atari800)
 
 ## Let the tools spell
 
-| Trick | Before | After | fbp | -l:min |
+| Trick | Before | After | fbp | -ls |
 |---|---|---|---|---|
 | Bare function argument | `K = PEEK(712)` | `K = PEEK 712` | 0 | 2 |
 | One-statement block | `IF A=1 : B=2 : ENDIF` | `IF A=1 THEN B=2` | 0 | 2 |
@@ -28,11 +28,11 @@ python3 tests/tricks.py --run    # sizes and behavior (Linux + atari800)
 | Negative constants | `K = X & 65520` | `K = X & -16` | 0 | 0 |
 
 All of these compile to identical code. The minimizer handles the constants either way; fbp
-handles the rest. If your pipeline is `-l:min`, adopt them as habits.
+handles the rest. If your pipeline is `-ls`, adopt them as habits.
 
 ## Statements
 
-| Trick | Before | After | fbp | -l:min |
+| Trick | Before | After | fbp | -ls |
 |---|---|---|---|---|
 | INC | `X = X + 1` | `INC X` | 1 | 1 |
 | INC, two-letter name | `QD = QD + 1` | `INC QD` | 2 | 2 |
@@ -57,7 +57,7 @@ handles the rest. If your pipeline is `-l:min`, adopt them as habits.
 
 ## Conditions as arithmetic
 
-| Trick | Before | After | fbp | -l:min |
+| Trick | Before | After | fbp | -ls |
 |---|---|---|---|---|
 | Boolean assignment | `IF A>B : F=1 : ELSE : F=0 : ENDIF` | `F = A > B` | 15 | 15 |
 | Conditional add | `IF B>9 THEN K=K+7` | `K = K + (B>9)*7` | 1 | 1 |
@@ -78,7 +78,7 @@ handles the rest. If your pipeline is `-l:min`, adopt them as habits.
 
 ## Bits instead of comparisons
 
-| Trick | Before | After | fbp | -l:min |
+| Trick | Before | After | fbp | -ls |
 |---|---|---|---|---|
 | Two signs at once | `IF L<0 OR R<0 THEN K=0` | `IF L ! R < 0 THEN K=0` | 3 | 3 |
 | Range 0..2^n-1 | `IF X<0 OR X>127 THEN K=0` | `IF X & -128 THEN K=0` | 4 | 4 |
@@ -99,7 +99,7 @@ handles the rest. If your pipeline is `-l:min`, adopt them as habits.
 
 ## Data
 
-| Trick | Before | After | fbp | -l:min |
+| Trick | Before | After | fbp | -ls |
 |---|---|---|---|---|
 | Bytes in a string | `DATA X() BYTE = 24,60,126,...` + `MOVE ADR(X), ...` | `X$ = "..."` + `MOVE &X$+1, ...` | 18 | 18 |
 | Literal address | `G$ = "ABCDEFGH" : MOVE &G$+1, 1536, 8` | `MOVE &"ABCDEFGH"+1, 1536, 8` | 6 | 6 |
@@ -120,7 +120,7 @@ handles the rest. If your pipeline is `-l:min`, adopt them as habits.
 
 - **Give one-letter names to the variables you use most.** A two-letter name costs one
   character at every use, so it belongs on a variable that appears twice (its DIM and one use),
-  not one that appears ten times. fbp `-O` renames by frequency for you; with `-l:min`, do it by
+  not one that appears ten times. fbp `-O` renames by frequency for you; with `-ls`, do it by
   hand.
 - **`_` is the 27th one-letter name.** Easy to forget, free to use.
 - **Labels don't use up letters.** PROC, DATA and DLI names are a separate name space, so when

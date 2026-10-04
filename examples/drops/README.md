@@ -5,7 +5,7 @@ written readably, to walk through the tools. From the repo root:
 
 ```sh
 T=tools; D=examples/drops
-python3 $T/fbsize.py min $D/drops.bas -o $D/DROPS.min      # fbp -O: measure 277, -l:min: 287
+python3 $T/fbsize.py min $D/drops.bas -o $D/DROPS.min      # fbp -O: measure 277, -ls: 287
 python3 $T/variants.py $D/ideas.py                          # what each idea in ideas.py saves
 python3 $T/variants.py $D/ideas.py inc stick clamp          # all three together: 256
 python3 $T/fbsize.py pack $D/DROPS.min -o $D/DROPS.BAS      # 3 lines of 120

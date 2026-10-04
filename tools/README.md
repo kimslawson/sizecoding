@@ -28,9 +28,9 @@ fbsize.py verify A B [--xex]
 ```
 
 - **measure**: lines, longest line, characters, measure, and the slack on each line.
-- **min**: minimizes a readable source with fbp `-O` if it's available, else FastBasic's `-l:min`,
+- **min**: minimizes a readable source with fbp `-O` if it's available, else FastBasic's `-ls`,
   then compiles the source and the result with your FastBasic and says whether the XEX is
-  identical. With fbp it also prints what `-l:min` would have given.
+  identical. With fbp it also prints what `-ls` would have given.
 - **stmts**: numbers every statement (for `--free` and `--glue`).
 - **pack**: breaks a minimized listing into lines, first fit. With `--free`, statements inside
   the range may be reordered (simulated annealing) to make it fit, keeping definition-before-use

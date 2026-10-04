@@ -72,7 +72,7 @@ def cmd_min(a):
         fbm = fblib.fb_minimize(a.src, width)
         L = fbm.rstrip(fblib.EOL).split(fblib.EOL)
         mm = fblib.measure(L)['measure']; m2 = fblib.measure(fblib.read_lines(dst))['measure']
-        print(f'  for comparison, fastbasic -l:min: measure {mm} ({mm - m2:+d} vs fbp)')
+        print(f'  for comparison, fastbasic -ls: measure {mm} ({mm - m2:+d} vs fbp)')
     x1, e1 = fblib.compile_xex(src)
     x2, e2 = fblib.compile_xex(out)
     if x2 is None:

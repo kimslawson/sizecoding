@@ -4,7 +4,7 @@
 Each trick is a `before` and an `after` snippet in readable FastBasic, plus a `ctx` that
 defines what the snippets need. The checker builds `ctx + before` and `ctx + after`, makes
 sure both compile, minimizes both with fbp (keeping names, so only the trick changes) and with
-FastBasic's own -l:min, and compares the saving with the number the docs claim.
+FastBasic's own -ls, and compares the saving with the number the docs claim.
 
 `same` = the trick must compile to identical code (a pure spelling change). Otherwise the
 behavior is checked by `check`: FastBasic statements that run after the snippet and must
@@ -146,7 +146,7 @@ def main():
         else:
             note = ' (same code)' if x0 == x1 else ''
         print(f"{'ok  ' if ok else 'FAIL'} {t['id']:18s} saves {got[0]:+3d} with fbp -O, "
-              f"{got[1]:+3d} with -l:min (claimed {t['saves'][0]:+d}, {t['saves'][1]:+d}){note}")
+              f"{got[1]:+3d} with -ls (claimed {t['saves'][0]:+d}, {t['saves'][1]:+d}){note}")
         if run and t['check'] and ok:
             b, a = behavior(t)
             if b != a:

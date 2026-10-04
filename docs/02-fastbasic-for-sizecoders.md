@@ -24,9 +24,11 @@ each keyword with its required part in uppercase and the optional part in lowerc
   value from 32768 up can be written as a negative number: 65535 is `-1`, $FFF0 is `-16`,
   $E000 is `-8192`. So `X&$FFF0` costs `X&-16`.
 
-There are two minimizers, and they are not equal:
+There are two minimizers, and they are not equal. FastBasic's is its short listing,
+`fastbasic -ls:120` (120 is the line width; adding `-l:min` only names the output file `.min`,
+and `-l` alone writes the long, readable listing):
 
-| | `fastbasic -l:min` | [fbp](https://github.com/kimslawson/fastbasic-parser) `-O` |
+| | `fastbasic -ls:120` | [fbp](https://github.com/kimslawson/fastbasic-parser) `-O` |
 |---|---|---|
 | Keywords, numbers, spaces | shortest | shortest |
 | Parentheses | keeps every one you wrote, adds them around function arguments | removes the ones precedence makes redundant, and those around a function's argument |
@@ -37,8 +39,8 @@ There are two minimizers, and they are not equal:
 | Variable names | kept | one letter for the most used ones (`-f` keeps them) |
 | Checks the result | no | compiles it and compares the code |
 
-On two complete PUR-120 games, fbp `-O` came out 31 and 21 characters shorter than `-l:min`,
-both with a byte-identical XEX. If you use `-l:min`, write the forms in the right column by
+On two complete PUR-120 games, fbp `-O` came out 31 and 21 characters shorter than `-ls`,
+both with a byte-identical XEX. If you use `-ls`, write the forms in the right column by
 hand; [Size tricks](03-size-tricks.md) gives each one's saving under both tools.
 
 ## Expressions

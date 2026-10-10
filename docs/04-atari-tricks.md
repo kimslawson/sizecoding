@@ -71,6 +71,14 @@ Either keep screen data inside one 4K block, or, where it's allowed to cross, co
 addresses the way ANTIC fetches them: `A & -4096 ! ((A + offset) & 4095)` keeps A's 4K block
 and wraps the offset inside it.
 
+**Or make the wrap the feature.** A vertical scroller whose playfield is exactly 4K and
+aligned on a 4K boundary gets a ring buffer from ANTIC for free: scroll past the end and the
+start shows up, with one LMS. [HIGHBALL](https://github.com/kimslawson/pinball8) keeps 128
+rows of 32 bytes (narrow mode 4) at $7000 and writes new rows just above the camera; with a
+camera C in scanlines, `LMS = $7000 + (C & 1016) * 4` and `VSCROL = C & 7`. C can wrap at 16
+bits too, since 65536 is a multiple of the ring's 1024 scanlines: compare only differences of
+C, never C itself. Rows are 32 bytes and 32 divides 4096, so no row ever straddles the wrap.
+
 ### Text on screen without PRINT
 
 PRINT is slow (it goes through the OS) and needs a cursor position. POKE screen codes straight
@@ -110,6 +118,17 @@ switch.
   MOVE draws any of them without erasing.
 - **A state variable can be the bitmap.** A missile byte of 3 is two pixels wide, 2 is one, 0 is
   none, so `POKE Q, K` draws the missile in whatever state K says.
+- **Missiles as a collision sensor.** Each missile has its own playfield-collision register
+  ($D000-$D003), which says which playfield colours it touched. Draw one object as four
+  overlapping missiles, each covering one half of it (top and bottom at double width, left and
+  right at normal width, `POKE 53260, 5`), and two DPEEKs tell you both *what* it hit (give
+  each kind of surface its own colour) and *which way the surface faces*: the normal is
+  left-half minus right-half, top-half minus bottom-half. `Q = DPEEK(53248)` holds top and
+  bottom, so `Q & 15 > 0` is the top half and `Q > 255` the bottom; a colour test on both
+  halves at once is a 16-bit mask (PF0 = 257, PF1 = 514, PF2 = 1028, PF3 = 2056). Clear with
+  `POKE 53278, 0` (HITCLR) after reading. The registers latch over every frame since the last
+  clear, so reading every other frame never misses a contact, but the object may be two
+  frames deep by then.
 - Colors are shadows: players at 704 to 707, playfield at 708 to 712 (712 is the background
   and border). POKE the shadow; the OS copies it every frame.
 

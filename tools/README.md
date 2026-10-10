@@ -70,6 +70,28 @@ Counts frames lost by the main loop while a key script plays the game. The progr
 exactly one `PAUSE`. Adds `INC Z9_N` before it (0.7 units), stops the program at PAUSE through
 the emulator's monitor twice, `--seconds` apart, and reads TIME and the counter from memory.
 
+## fboverruns.py
+
+```
+fboverruns.py PROG.bas --vars A,B,C [--keys "script"] [--seconds 10] [--exclude-proc NAME] [--sub OLD=>NEW]
+```
+
+Logs only the main-loop passes that took more than their frame: how many jiffies, and the
+listed variables at the end of that pass, so you can see which combination of jobs did it.
+Adds one IF per pass. `--exclude-proc` skips passes that called a PROC on purpose (building
+a level); `--sub` edits a copy of the program first (an autoplayer). Needs a PAUSE on a line
+of its own and the main loop's LOOP at column 0. See [Big games](../docs/09-big-games.md).
+
+## fbtrace.py
+
+```
+fbtrace.py PROG.bas --vars A,B,C [--keys "script"] [--seconds 4] [--frames 64] [--sub OLD=>NEW]
+```
+
+Records the listed variables at the end of every pass into a 256-frame ring at $9000, stops
+the emulator after `--seconds` and prints the last `--frames` passes. For debugging physics
+and game logic from the real emulator; it costs a few units a frame, so don't time with it.
+
 ## proof.py
 
 ```

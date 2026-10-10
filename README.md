@@ -54,6 +54,7 @@ If you read nothing else:
 | [6. Packing ten lines](docs/06-packing.md) | Line breaks, reordering, and why the end of a line matters most |
 | [7. Workflow](docs/07-workflow.md) | Readable source, variants, measuring, testing: the loop that keeps it honest |
 | [8. Submission](docs/08-submission.md) | The ZIP, the proof image, the disk image |
+| [9. Big games](docs/09-big-games.md) | An expanded build in parallel, letting fbp name things, logging overruns, scheduling physics |
 | [Abbreviations](docs/abbreviations.md) | Every keyword's shortest spelling, generated from the grammar |
 
 ## The toolchain&nbsp;&nbsp;🧰
@@ -66,6 +67,8 @@ Python 3 scripts in [`tools/`](tools/), documented in [tools/README.md](tools/RE
 | `variants.py` | Try size ideas as named, combinable edits and see what each saves |
 | `fbbench.py` | Time statements in the emulator, in units of 2 scanlines |
 | `fbframes.py` | Count lost frames in your game while a script plays it |
+| `fboverruns.py` | Log only the passes that overran, with the variables that explain why |
+| `fbtrace.py` | Trace variables every frame (for debugging physics and logic) |
 | `proof.py` | Render a listing as an ATASCII image for the contest's proof |
 | `abbrevs.py` | Regenerate the abbreviation table from FastBasic's grammar |
 
@@ -79,7 +82,7 @@ python3 tools/proof.py GAME.BAS -o proof.png          # the listing as the Atari
 ```
 
 The size tools need only Python and FastBasic. The emulator tools (`fbbench`, `fbframes`,
-the behavior half of the tests) need Linux with atari800, Xvfb, xdotool and ImageMagick.
+`fboverruns`, `fbtrace`, the behavior half of the tests) need Linux with atari800, Xvfb, xdotool and ImageMagick.
 
 ## Colophon&nbsp;&nbsp;🙏
 

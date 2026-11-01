@@ -80,9 +80,9 @@ Python 3 scripts in [`tools/`](tools/), documented in [tools/README.md](tools/RE
 export FASTBASIC=/path/to/fastbasic   # the cross-compiler
 export FBP=/path/to/fbp               # optional, but it's free characters
 python3 tools/fbsize.py min game.bas -o GAME.min      # minimize + check the XEX is identical
-python3 tools/fbsize.py pack GAME.min -o GAME.BAS     # break into 10 lines of 120
-python3 tools/fbsize.py measure GAME.BAS              # what's left on every line
-python3 tools/proof.py GAME.BAS -o proof.png          # the listing as the Atari sees it
+python3 tools/fbsize.py pack GAME.min -o GAME10.BAS   # break into 10 lines of 120
+python3 tools/fbsize.py measure GAME10.BAS            # what's left on every line
+python3 tools/proof.py GAME10.BAS -o proof.png        # the listing as the Atari sees it
 ```
 
 The size tools need only Python and FastBasic. The emulator tools (`fbbench`, `fbframes`,

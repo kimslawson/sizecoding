@@ -21,8 +21,8 @@ Don't trust a minimizer's own line breaks for this. FastBasic's `-l:min -ls:120`
 its own way: on one 1,184-character listing it produced 12 lines, where first fit needs 10.
 
 ```sh
-python3 tools/fbsize.py pack GAME.min -o GAME.BAS
-python3 tools/fbsize.py measure GAME.BAS      # slack per line
+python3 tools/fbsize.py pack GAME.min -o GAME10.BAS
+python3 tools/fbsize.py measure GAME10.BAS    # slack per line
 ```
 
 ## When it doesn't fit
@@ -52,7 +52,7 @@ annealing, while keeping the order the compiler needs:
 
 ```sh
 python3 tools/fbsize.py stmts GAME.min | head -30      # number the statements
-python3 tools/fbsize.py pack GAME.min -o GAME.BAS --free '0:/^DO$/' --glue 0:3
+python3 tools/fbsize.py pack GAME.min -o GAME10.BAS --free '0:/^DO$/' --glue 0:3
 ```
 
 - `--free A:B` lets statements A to B-1 move. A and B are statement numbers or `/regex/`

@@ -9,8 +9,8 @@ Judges should be able to boot it and play, with no typing. FastBasic's release i
 `mkatr`, which writes an ATR whose boot sector loads an XEX directly, no DOS needed:
 
 ```sh
-fastbasic -t:atari-int GAME.BAS          # the packed listing compiles to GAME.xex
-mkatr game.atr -b GAME.xex               # -b: load this file at boot
+fastbasic -t:atari-int GAME10.BAS        # the packed listing compiles to GAME10.xex
+mkatr game.atr -b GAME10.xex             # -b: load this file at boot
 ```
 
 Compile the **packed** listing, the one you're submitting, not the readable source. They should
@@ -19,7 +19,10 @@ shows. Then boot the ATR in an emulator, from scratch, the way a judge will.
 
 ## The listings
 
-- **The packed listing** as text (`GAME.BAS`, ATASCII line ends): this is the program.
+- **The packed listing** as text (`GAME10.BAS`, ATASCII line ends): this is the program.
+  Give it a name that differs from the readable source by more than case: macOS and Windows
+  treat `game.bas` and `GAME.BAS` as one file, so packing to `GAME.BAS` would overwrite
+  your source.
 - **The readable listing** with comments, in the same statement order. It's what earns the
   bonus for code explanations, and it lets a judge check what each of your 1,200 characters
   does.
@@ -27,9 +30,9 @@ shows. Then boot the ATR in an emulator, from scratch, the way a judge will.
   characters and inverse video inside your strings, so make it an image:
 
 ```sh
-python3 tools/proof.py GAME.BAS -o proof.png                 # black on white, 2x
-python3 tools/proof.py GAME.BAS -o proof.png --style atari   # blue and white
-python3 tools/proof.py GAME.BAS -o proof.png --wrap 40       # as the 40-column screen wraps it
+python3 tools/proof.py GAME10.BAS -o proof.png                 # black on white, 2x
+python3 tools/proof.py GAME10.BAS -o proof.png --style atari   # blue and white
+python3 tools/proof.py GAME10.BAS -o proof.png --wrap 40       # as the 40-column screen wraps it
 ```
 
 Every byte is drawn as its ATASCII glyph (one glyph, one character), with a column ruler, the

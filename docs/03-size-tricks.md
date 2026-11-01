@@ -97,6 +97,25 @@ handles the rest. If your pipeline is `-ls`, adopt them as habits.
   to precedence. The X version uses two divides (about 11 units together); when that's too
   slow, `(S&8=0)-(S&4=0)` is 4 characters longer and faster.
 
+## Speed for characters
+
+These go the other way: a few characters more for a lot less time. Only `*2`, `*4` and `*256`
+compile to shifts, so other constants are built from those and adds, and a loop walks a pointer
+instead of multiplying its index. `(R * 4) * 2` has no constant part to fold, so FastBasic and
+fbp both leave it as two shifts. The timings are in [Speed](05-speed.md#multiply-and-divide-the-frame-killers).
+
+| Trick | Before | After | fbp | -ls |
+|---|---|---|---|---|
+| x8 from shifts | `K = R * 8` | `K = R * 4 * 2` | -2 | -2 |
+| x16 from shifts | `K = R * 16` | `K = R * 4 * 4` | -1 | -1 |
+| x3 from a shift and an add | `K = R * 3` | `K = R * 2 + R` | -2 | -2 |
+| x40 from shifts and an add | `K = R * 40` | `K = (R * 4 + R) * 4 * 2` | -7 | -7 |
+| Running pointer | `FOR J = 0 TO 7 : POKE 1536 + J * 8, 1 : NEXT J` | `A = 1536 : FOR J = 0 TO 7 : POKE A, 1 : A = A + 8 : NEXT J` | -6 | -6 |
+
+- `K = -(B > 9) & 7` instead of `(B > 9) * 7` (above, under conditions) is the same kind of
+  trade.
+- Spend these where the frame is tight, and keep the short form everywhere else.
+
 ## Data
 
 | Trick | Before | After | fbp | -ls |

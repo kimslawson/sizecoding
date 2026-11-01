@@ -26,21 +26,28 @@ If you read nothing else:
 2. **Learn the precedence.** `&`, `!` and `EXOR` bind *tighter* than `*` and `/`, which bind
    tighter than `+` and `-`. `I+U&B` is `I+(U&B)`. Most parentheses you'd type in another
    BASIC are dead weight here. (It cuts both ways: `X+1&7` is `X+1`, not a wrap.)
-3. **Comparisons are numbers.** True is 1, false is 0, so `F=A>B` replaces a whole
+3. **`IF ... THEN` takes one statement.** In `IF C THEN A : B`, B runs every time. Two or more
+   statements need a block, `IF C` ... `ENDIF`. `fbp -v` points at every line where this can
+   bite.
+4. **Comparisons are numbers.** True is 1, false is 0, so `F=A>B` replaces a whole
    IF/ELSE/ENDIF (15 characters) and `K=K+(B>9)*7` replaces an IF.
-4. **One-letter names, given to the variables you use most.** There are 27 of them: A to Z and
+5. **One-letter names, given to the variables you use most.** There are 27 of them: A to Z and
    `_`.
-5. **Functions take a bare argument.** `PEEK 712`, `STICK 0`, `RAND 10`.
-6. **Strings are your data segment.** Any byte but `"` and $9B fits in a literal, and
+6. **Functions take a bare argument.** `PEEK 712`, `STICK 0`, `RAND 10`.
+7. **Strings are your data segment.** Any byte but `"` and $9B fits in a literal, and
    `&"..."` is the address of a literal with no variable at all.
-7. **The OS already did the work.** Patch its display list instead of building one; the
+8. **The OS already did the work.** Patch its display list instead of building one; the
    runtime already turned the sound off.
-8. **Speed is a budget, not a feeling.** A frame is 131 units of 2 scanlines (NTSC). Measure
+9. **Speed is a budget, not a feeling.** A frame is 131 units of 2 scanlines (NTSC). Measure
    what statements cost, give heavy jobs their own frames, and count lost frames with a
    tool, not your eyes.
-9. **Packing is its own problem.** A statement never splits across lines, so the last 10 to
-   40 characters of each line are where listings go to die.
-10. **Try ideas as variants, not edits**, and keep the ones that measure better.
+10. **Multiply and divide are the frame-killers.** The 6502 has neither: only `*2`, `*4` and
+    `*256` become shifts, and every other multiply, every divide and every `MOD` costs about 3
+    adds. Build constants from shifts and adds (`R*4*2`, not `R*8`), walk pointers instead of
+    multiplying indexes, use tables and counters.
+11. **Packing is its own problem.** A statement never splits across lines, so the last 10 to
+    40 characters of each line are where listings go to die.
+12. **Try ideas as variants, not edits**, and keep the ones that measure better.
 
 ## The pages&nbsp;&nbsp;📚
 

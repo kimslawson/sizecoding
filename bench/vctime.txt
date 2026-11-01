@@ -1,0 +1,6 @@
+delay 0: ticks between VCOUNT 122->0 122->130 121->130 129->3 128->2 128->1 124->1 123->0 122->0 122->130
+delay 1: ticks between VCOUNT 123->0 123->0 122->130 121->130 129->3 129->2 128->2 127->1 123->0 123->0
+delay 2: ticks between VCOUNT 128->1 124->1 123->0 122->0 122->130 121->129 129->2 128->2 128->1 123->1
+delay 3: ticks between VCOUNT 129->2 128->2 128->1 123->1 123->0 122->130 122->130 129->3 129->2 128->2
+every tick is inside VCOUNT 122..3 (across the wrap)
+a single VCOUNT that fits every tick: none

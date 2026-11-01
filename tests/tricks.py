@@ -87,6 +87,17 @@ trick('do-loop', 'REPEAT\n INC K\n IF K > 9 THEN EXIT\nUNTIL 0', 'DO\n INC K\n I
       (1, 1), ctx='K = 0', check='K')
 trick('print-sep', 'PRINT "A="; A', 'PRINT "A=" A', (0, 1), ctx='A = 3')
 
+# --- speed for characters: multiply and divide are the frame-killers (docs/05-speed.md) ---
+# These cost characters and save time: only x2, x4 and x256 compile to shifts, so other
+# constants are built from those and adds. (R * 4) * 2 has no constant to fold: it stays two
+# shifts in FastBasic and in fbp.
+trick('mul8-shifts', 'K = R * 8', 'K = R * 4 * 2', (-2, -2), ctx='R = 100', check='K')
+trick('mul16-shifts', 'K = R * 16', 'K = R * 4 * 4', (-1, -1), ctx='R = 100', check='K')
+trick('mul3-add', 'K = R * 3', 'K = R * 2 + R', (-2, -2), ctx='R = 100', check='K')
+trick('mul40-shifts', 'K = R * 40', 'K = (R * 4 + R) * 4 * 2', (-7, -7), ctx='R = 100', check='K')
+trick('running-pointer', 'FOR J = 0 TO 7\n POKE 1536 + J * 8, 1\nNEXT J',
+      'A = 1536\nFOR J = 0 TO 7\n POKE A, 1\n A = A + 8\nNEXT J', (-6, -6), check='@1536:64')
+
 # --- data ----------------------------------------------------------------------------------
 trick('literal-addr', 'G$ = "ABCDEFGH"\nMOVE & G$ + 1, 1536, 8', 'MOVE & "ABCDEFGH" + 1, 1536, 8',
       (6, 6), check='@1536:8')

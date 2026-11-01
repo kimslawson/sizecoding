@@ -139,11 +139,71 @@ jiffy counter and wraps from 32767 to -32768 after about 9 minutes.
 - **DATA arrays** hold words or bytes: `DATA X() = 1, 2, 3` or `DATA X() BYTE = 1, 2, "AB"`.
   Byte DATA can include strings. `DIM X(9) BYTE` makes a zeroed byte array.
 - Strings are at most 255 bytes, and `A$=+B$` appends.
+- **Assigning a string variable takes a 256-byte buffer from the heap**, even for a
+  two-character literal: an array DIMmed after `A$ = "XY"` lands 260 bytes after a 4-byte array
+  DIMmed before it. A literal used through `&"..."` or `ADR("...")` stays in the program and
+  takes none, so for constant text keep the address in a numeric variable instead.
+- **DIM arrays and string buffers live in the heap, right after the program,** allocated in
+  the order the statements run. Anything you POKE at a fixed address (a screen, a font, player
+  data, a table) must start above the heap's end, or the arrays overwrite it, or it overwrites
+  them. The heap starts at `__HEAP_RUN__` in the `.lbl` file `fastbasic -g` writes; add your
+  DIMs and strings. A guard at startup catches the program outgrowing it (a block, not
+  `IF ... THEN ? "HEAP" : END`, which would always end):
+
+  ```
+  IF ADR(LAST) + SIZE > BUFFER   ' LAST: the last array DIMmed, SIZE: its bytes
+    ? "HEAP" : END
+  ENDIF
+  ```
 
 ## Statements and blocks
 
-- **`IF ... THEN` takes exactly one statement**, and anything after the next `:` always runs.
-  `IF ... THEN IF ... THEN ...` nests. Longer bodies need `IF` / `ELIF` / `ELSE` / `ENDIF`.
+### One-line IF, or a block
+
+`IF C THEN S` takes **exactly one statement**. Whatever follows the next `:` runs every time,
+true or false. Atari BASIC and Turbo-Basic XL make the rest of the line conditional, so this is
+the first bug almost everyone writes in FastBasic, and it doesn't announce itself:
+
+```
+INC N : IF N > 9 THEN F = 1 : N = 0     ' N = 0 runs every pass, so N never gets past 1
+IF E THEN POKE E, X : POKE E + 1, Y     ' with E = 0 the second POKE still writes, to address 1
+IF PEEK(A) = 0 THEN FOUND = A : EXIT    ' EXIT always runs: the loop stops on its first pass
+```
+
+The first one hangs a program in a loop that never finishes, the second scribbles on zero
+page, the third silently does one pass of a search. The rule that avoids all three:
+
+- **One statement: `IF C THEN S`.** It's the shortest form, and fbp turns a one-statement block
+  into it for you.
+- **Two or more: a block.** `IF C`, the statements, `ENDIF`, with `ELIF` and `ELSE` as needed.
+  Only what's inside the block is conditional, and the block can span lines and share them
+  with other statements, so it packs as well as anything else.
+
+  ```
+  INC N
+  IF N > 9
+    F = 1 : N = 0
+  ENDIF
+  ```
+
+- **`IF A THEN IF B THEN S`** nests: S needs both. Still one statement at the end.
+- **One of several: an ELIF chain.** It runs exactly one arm and needs one `ENDIF` in all,
+  where nested blocks need one each.
+- **`AND` and `OR` evaluate both sides, always.** `IF I < 40 AND PEEK(A + I)` still reads
+  `PEEK(A + I)` when I is 40 or more. When the second test must not run (or is expensive),
+  nest it: `IF I < 40 THEN IF PEEK(A + I) THEN S`. (It's faster too, see
+  [Speed](05-speed.md).)
+- **Let fbp check.** `fbp -v` notes every line where a statement follows an `IF ... THEN`:
+  `note, statements after 'IF ... THEN statement:' are not conditional in FastBasic`. Each note
+  is either what you meant or a bug. Run it on the readable source after every edit.
+
+### The rest
+
+- **Every variable is global, PROC parameters included.** `PROC P X` just assigns the global X
+  when it's called. So a PROC that uses a `FOR` variable of the code calling it moves the
+  caller's loop (`FOR I = 0 TO 7 : @P : NEXT I` with `FOR I` inside P), and a PROC whose
+  parameter shares a name with the caller's loop variable does the same. Give each PROC its own
+  loop variables and temporaries, or check the caller doesn't need them across the call.
 - **Blocks can span lines, statements can't.** An IF, a loop or a PROC can start on one line and
   end on another, which is what lets a packer break lines anywhere between statements.
 - **Loops:** `DO`/`LOOP` (forever), `REPEAT`/`UNTIL`, `WHILE`/`WEND`, `FOR`/`NEXT` (the

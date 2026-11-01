@@ -15,7 +15,23 @@ Environment variables: `FASTBASIC` (path to the compiler, default `fastbasic` on
 `FBP` (path to fbp, default `fbp`), `FB_TARGET` (default `atari-int`), `EMU_DISPLAY` (the
 virtual display, default `:99`).
 
-On a Mac, the size tools run natively; run the emulator tools in a Linux VM or container.
+On a Mac, the size tools run natively; run the emulator tools in a Linux VM or in the
+container in [`docker/`](docker/Dockerfile) (FastBasic 4.7, fbp, atari800 5.0, Xvfb, xdotool,
+ImageMagick, Pillow, numpy):
+
+```sh
+docker build -t fb-sizecoding tools/docker
+tools/docker/run.sh python3 tools/fbbench.py bench/arith.bench    # the current directory is /work
+```
+
+If you copied a FastBasic release somewhere other than where it unpacked and a compile stops
+right after `LINK` with `can't assemble file`, set `FASTBASIC_HOME` to the folder that holds
+the compiler: it looks for its linker configuration and libraries there.
+
+**Key scripts hold keys.** atari800 reads its keyboard once a frame, so a bare
+`xdotool key h` can come and go between two reads and never reach the program. Hold every key
+for a frame or more: `xdotool keydown h; sleep 0.1; xdotool keyup h`. (Joystick keys are held
+anyway in most scripts, which is why they work.)
 
 ## fbsize.py
 

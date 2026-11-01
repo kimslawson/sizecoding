@@ -1,0 +1,49 @@
+# Multiply and divide, and what to use instead. GRAPHICS 0 (text mode DMA), NTSC.
+[setup]
+GRAPHICS 0
+R = 100 : J = 10 : J3 = 3 : K = 0 : A = 1536 : C = 0 : T = 1234 : H = 5 : T1 = 0 : W2 = 0
+DIM W(23), X(3), AX(3), F(7)
+FOR K = 0 TO 23 : W(K) = K * 40 : NEXT
+FOR K = 0 TO 3 : AX(K) = ADR(X) + K * 2 + 1 : NEXT
+FOR K = 0 TO 7 : F(K) = K * 131 : NEXT
+AT = ADR(T) + 1
+[block K = R * 8]
+K = R * 8
+[block K = R * 4 * 2]
+K = R * 4 * 2
+[block K = R * 16]
+K = R * 16
+[block K = R * 4 * 4]
+K = R * 4 * 4
+[block K = R * 3]
+K = R * 3
+[block K = R * 2 + R]
+K = R * 2 + R
+[block K = R * 40]
+K = R * 40
+[block K = (R * 4 + R) * 4 * 2]
+K = (R * 4 + R) * 4 * 2
+[block K = W(J) (table of J * 40)]
+K = W(J)
+[block K = R / 8]
+K = R / 8
+[block K = R MOD 3]
+K = R MOD 3
+[block INC C : IF C = 3 THEN C = 0]
+INC C : IF C = 3 THEN C = 0
+[block K = A + J * 40]
+K = A + J * 40
+[block A = A + 40 (running pointer)]
+A = A + 40
+[block K = PEEK(ADR(X) + J3 * 2 + 1)]
+K = PEEK(ADR(X) + J3 * 2 + 1)
+[block K = PEEK(AX(J3)) (address table)]
+K = PEEK(AX(J3))
+[block K = PEEK(AT) (ADR(T) + 1 kept)]
+K = PEEK(AT)
+[block POKE 1600 + H, PEEK(54283)]
+POKE 1600 + H, PEEK(54283)
+[block W2 = (TIME - T1) * 131 + PEEK(54283)]
+W2 = (TIME - T1) * 131 + PEEK(54283)
+[block W2 = F((TIME - T1) & 7) + PEEK(54283)]
+W2 = F((TIME - T1) & 7) + PEEK(54283)

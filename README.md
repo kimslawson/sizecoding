@@ -88,6 +88,13 @@ python3 tools/proof.py GAME10.BAS -o proof.png        # the listing as the Atari
 The size tools need only Python and FastBasic. The emulator tools (`fbbench`, `fbframes`,
 the behavior half of the tests) need Linux with atari800, Xvfb, xdotool and ImageMagick.
 
+## Agent skills&nbsp;&nbsp;🤖
+
+[`skills/`](skills/) holds two Agent Skills, `fastbasic` and `fastbasic-sizecoding`, that
+teach an AI assistant this guide plus what finished ten-liners learned about speed,
+hardware, data and networking. Zip a folder and upload it to Claude, or drop both into
+`~/.claude/skills/`. See [skills/README.md](skills/README.md).
+
 ## Colophon&nbsp;&nbsp;🙏
 
 Shoutouts to @dmsc for FastBasic, which makes all of this possible (and fast), and to Gunnar

@@ -28,7 +28,10 @@ a fresh Debian or Ubuntu machine, so an agent can compile, measure and test what
 ## Where the facts come from
 
 The numbers are this repo's measurements ([`bench/`](../bench/), [`tests/`](../tests/)) and
-those of finished FastBasic games, generalized. If a skill and a page in [`docs/`](../docs/)
+those of finished FastBasic games, generalized. [`tests/skills.py`](../tests/skills.py) checks
+the claims the skills add beyond `docs/` against the compiler and, with `--run`, in atari800:
+what must and mustn't compile per target, values of the precedence and expression tricks, and
+that every integer `SIO` equivalent of a FujiNet statement leaves the same SIO control block. If a skill and a page in [`docs/`](../docs/)
 disagree, the page (with its test) wins; open an issue.
 
 ## License

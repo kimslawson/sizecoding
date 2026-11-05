@@ -56,8 +56,10 @@ SIO ddevic, dunit, dcomnd, dstats, dbuf, dtimlo, dbyt, daux1, daux2
 
 This mapping is read from `fujinet.syn` and `sio.syn` in the FastBasic 4.7HF
 release, where `sio.syn` is part of the base target (`a800.tgt`) and
-`fujinet.syn` is added only by `atari-fp.tgt`. Confirm the table on FujiNet
-hardware or FujiNet-PC before relying on it.
+`fujinet.syn` is added only by `atari-fp.tgt`. `tests/skills.py --run` in the
+sizecoding repo checks in atari800 that each `SIO` line leaves the same SIO
+device control block ($0300-$030B) as its FujiNet statement. What only hardware
+or FujiNet-PC can confirm is FujiNet's side: how it answers.
 
 ## Blocking versus non-blocking
 

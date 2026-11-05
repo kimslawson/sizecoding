@@ -123,9 +123,11 @@ DLI                                   ' disable
 - **Enabling a DLI costs a frame** (the statement compiles to `PAUSE 0` first,
   `dli.syn`). Never toggle in the loop; change the table it reads (a hit flash
   is a table write).
-- A DLI can land a scanline late. Design for it: glyphs whose top row is blank
-  in both fonts hide a late font switch. Check your FastBasic version's
-  `dli.syn` for whether it emits `WSYNC` and where.
+- In 4.7 a `DLI SET` routine loads its first value, does `STA WSYNC`, then
+  stores (`dli.syn`), so the first store lands at the start of the next
+  scanline; further stores on the same DLI follow right after. Glyphs whose
+  top row is blank in both fonts are cheap insurance against a switch that
+  lands a line off.
 - `DLI SET` routines are laid out among DATA and PROCs in source order
   (reference/language.md), and a `DLI SET` that reads a table must come after it.
 - A DLI on a JMP line fires.

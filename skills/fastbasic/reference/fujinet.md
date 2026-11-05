@@ -54,10 +54,10 @@ SIO ddevic, dunit, dcomnd, dstats, dbuf, dtimlo, dbyt, daux1, daux2
 
 (N is the unit; a variable N and a string N$ would collide, so the URL is S$.)
 
-This mapping is read from `fujinet.syn` and `sio.syn` in the grammar fbp
-vendors (FastBasic 4.7 plus later commits). Confirm `SIO` compiles in your
-FastBasic with a one-line test, and confirm the table on FujiNet hardware or
-FujiNet-PC before relying on it.
+This mapping is read from `fujinet.syn` and `sio.syn` in the FastBasic 4.7HF
+release, where `sio.syn` is part of the base target (`a800.tgt`) and
+`fujinet.syn` is added only by `atari-fp.tgt`. Confirm the table on FujiNet
+hardware or FujiNet-PC before relying on it.
 
 ## Blocking versus non-blocking
 
